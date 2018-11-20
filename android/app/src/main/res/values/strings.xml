@@ -1,4 +1,3 @@
 <resources>
-    <string name="app_name">NewsFeedAlpha</string>
-    <string name="title_activity_splash_screen">Zapp News</string>
+    <string name="app_name">Zapp News</string>
 </resources>

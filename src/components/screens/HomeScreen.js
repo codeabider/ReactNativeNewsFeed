@@ -1,0 +1,62 @@
+import React, { Component } from 'react';
+import {
+    StyleSheet,
+    View,
+    StatusBar
+} from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
+import NewsListComponent from '../NewsListComponent';
+import { colors, fonts } from '../_base';
+
+export default class HomeScreen extends Component {
+    static navigationOptions = () => ({
+        title: 'News Home',
+        headerTintColor: colors.secondaryBackground,
+        headerStyle: {
+          backgroundColor: colors.primary
+        },
+        headerTitleStyle: {
+            flex: 1,
+            textAlign: 'center'
+        }
+    });
+
+    componentDidMount() {
+        SplashScreen.hide()
+    }
+
+    render() {
+        return (
+            <View style={styles.container}>
+            <StatusBar 
+                backgroundColor={colors.background}
+                barStyle="light-content" // for iOS
+            />
+            {/* <NewsListComponent
+                id={ '0' }
+                limit={ 3 }
+                disableInfiniteScroll={ true }
+                onNewsSelect={ id => navigation.navigate('Book', {id}) }
+            /> */}
+            <NewsListComponent
+                id={ '0' }
+                onNewsSelect={() => alert()}
+            />
+            </View>
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: colors.background
+    },
+    welcome: {
+        fontSize: fonts.md,
+        textAlign: 'center',
+        margin: 10,
+    }
+});

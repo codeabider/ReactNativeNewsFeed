@@ -29,9 +29,9 @@ export default class NewsListComponent extends Component {
     }
 
     getData() {
-        const { data, page, limit, noMore } = this.state;
+        // const { data, page, limit, noMore } = this.state;
         // const { id } = this.props;
-        const country = 'us';
+        const country = 'in';
         const apiKey = '117db645f6774006a1f9484d229d1d65';
 
         this.setState({ loading: true }, () => {
@@ -40,9 +40,7 @@ export default class NewsListComponent extends Component {
             .then( updatedData => {
                 // console.log(updatedData.articles);
                 this.setState({
-                    // data: [...data, ...updatedData.articles],
-                    data: updatedData.articles,
-                    noMore: noMore || updatedData.articles.length < limit
+                    data: updatedData.articles
                 });
                 console.log('data', this.state.data);
             } )
@@ -55,11 +53,11 @@ export default class NewsListComponent extends Component {
         })
     }
 
-    loadMore() {
-        const { page, loading, noMore } = this.state;
-        if (loading || noMore) return;
-        this.setState({ page: page + 1 }, () => this.getData());
-    }
+    // loadMore() {
+    //     const { page, loading, noMore } = this.state;
+    //     if (loading || noMore) return;
+    //     this.setState({ page: page + 1 }, () => this.getData());
+    // }
 
     handleRefresh() {
         this.setState({ refreshing: true }, () => this.getData());
@@ -77,17 +75,17 @@ export default class NewsListComponent extends Component {
                         <TouchableHighlight 
                             underlayColor={ colors.primary }
                             style={ styles.listItem }
-                            onPress={ onNewsSelect.bind(this, item.id) }
+                            onPress={ onNewsSelect.bind(this, item.title) }
                         >
                             <NewsSummaryComponent
                                 newsItem={ item }
                             />
                         </TouchableHighlight>
                     }
-                    onEndReached={ this.loadMore.bind(this) }
                     refreshing={ this.state.refreshing }
                     onRefresh={ this.handleRefresh.bind(this) }
-                    onEndReachedThreshold={ 0.01 }
+                    // onEndReachedThreshold={ 0.01 }
+                    // onEndReached={ this.loadMore.bind(this) }
                     ListFooterComponent={ <LoaderComponent isLoading={ loading } /> }
                 />
             </View>
@@ -96,7 +94,7 @@ export default class NewsListComponent extends Component {
 }
 
 NewsListComponent.propTypes = {
-    id: PropTypes.string.isRequired,
+    // id: PropTypes.string.isRequired,
     limit: PropTypes.number,
     page: PropTypes.number,
     disableInfiniteScroll: PropTypes.bool,

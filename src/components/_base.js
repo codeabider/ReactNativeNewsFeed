@@ -3,7 +3,8 @@ export const colors = {
     secondary: '#2F6871',
     normalText: '#4E301C',
     background: '#EFCF4B',
-    secondaryBackground: '#FFEEA6'
+    secondaryBackground: '#FFEEA6',
+    white: '#FFFFFF'
 }
 
 export const padding = {
@@ -15,6 +16,6 @@ export const padding = {
 export const fonts = {
     sm: 14,
     md: 16,
-    lg: 28,
+    lg: 24,
     primary: 'System'   // San Francisco (iOS), Roboto (Android) 
 }

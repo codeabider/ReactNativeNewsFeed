@@ -26,22 +26,22 @@ export default class HomeScreen extends Component {
     }
 
     render() {
+        const { navigation } = this.props;
         return (
             <View style={styles.container}>
-            <StatusBar 
-                backgroundColor={colors.background}
-                barStyle="light-content" // for iOS
-            />
-            {/* <NewsListComponent
-                id={ '0' }
-                limit={ 3 }
-                disableInfiniteScroll={ true }
-                onNewsSelect={ id => navigation.navigate('Book', {id}) }
-            /> */}
-            <NewsListComponent
-                id={ '0' }
-                onNewsSelect={() => alert()}
-            />
+                <StatusBar 
+                    backgroundColor={colors.background}
+                    barStyle="light-content" // for iOS
+                />
+                {/* <NewsListComponent
+                    id={ '0' }
+                    limit={ 3 }
+                    disableInfiniteScroll={ true }
+                    onNewsSelect={ id => navigation.navigate('Book', {id}) }
+                /> */}
+                <NewsListComponent
+                    onNewsSelect={title => navigation.navigate('Details', {title})}
+                />
             </View>
         );
     }
@@ -53,10 +53,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: colors.background
-    },
-    welcome: {
-        fontSize: fonts.md,
-        textAlign: 'center',
-        margin: 10,
     }
 });

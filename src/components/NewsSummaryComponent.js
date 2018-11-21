@@ -11,7 +11,7 @@ import { colors, padding, fonts } from './_base';
 
 const NewsSummaryComponent = (props) => {
     // title, img, src, short desc (150 words max)
-    const { title, urlToImage, url, description } = props.newsItem;
+    const { title, urlToImage, source, description } = props.newsItem;
     return (
         <View style={styles.summaryContainer}>
             <View style={styles.summaryHeaderContainer}>
@@ -30,16 +30,15 @@ const NewsSummaryComponent = (props) => {
                 </View>
             </View>
             <View style={styles.newsDescriptionContainer}>
-                {description ? <Text style={styles.newsDescriptionText}>{ description }</Text> : null}
+                {description ?
+                    <Text style={styles.newsDescriptionText}>
+                        { description.length > 150 ?
+                        `${description.substr(0, 150)}...` : description }
+                    </Text> :
+                    null
+                }
                 <Text style={styles.newsSource}>Source:
-                    <Text 
-                        style={styles.newsSourceURL}
-                        onPress={() => { 
-                            Linking.openURL(url)
-                            .catch(err => {
-                                Alert.alert('Something went wrong!')
-                        })
-                    }}> { url.length > 80 ? `${url.substr(0, 80)}...` : url }</Text>
+                    <Text style={styles.newsSourceName}> { source.name }</Text>
                 </Text>
             </View>
         </View>
@@ -81,9 +80,9 @@ const styles = StyleSheet.create({
         paddingTop: padding.sm,
         fontWeight: "bold"
     },
-    newsSourceURL: {
+    newsSourceName: {
         fontWeight: "normal",
-        color: colors.secondary
+        color: colors.primary
     }
 });
 

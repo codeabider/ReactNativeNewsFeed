@@ -17,7 +17,11 @@ const LoaderComponent = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        padding: padding.md
+        flex: 1,
+        padding: padding.md,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: colors.background
     }
 });
 

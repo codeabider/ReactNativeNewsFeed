@@ -4,7 +4,7 @@ export const colors = {
     normalText: '#4E301C',
     background: '#EFCF4B',
     secondaryBackground: '#FFEEA6',
-    white: '#FFFFFF'
+    textWhite: '#FFFFFF'
 }
 
 export const padding = {

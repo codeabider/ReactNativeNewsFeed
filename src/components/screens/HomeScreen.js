@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    StatusBar
+    StatusBar,
+    Picker,
+    Text
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import NewsListComponent from '../NewsListComponent';
-import { colors, fonts } from '../_base';
+import { colors, fonts, padding } from '../_base';
 
 export default class HomeScreen extends Component {
     static navigationOptions = () => ({
@@ -21,26 +23,44 @@ export default class HomeScreen extends Component {
         }
     });
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            country: 'in',
+            topic: ''
+        }
+    }
+
     componentDidMount() {
         SplashScreen.hide()
     }
 
     render() {
         const { navigation } = this.props;
+        const { country } = this.state;
         return (
             <View style={styles.container}>
                 <StatusBar 
                     backgroundColor={colors.background}
-                    barStyle="light-content" // for iOS
+                    barStyle='light-content' // for iOS
                 />
-                {/* <NewsListComponent
-                    id={ '0' }
-                    limit={ 3 }
-                    disableInfiniteScroll={ true }
-                    onNewsSelect={ id => navigation.navigate('Book', {id}) }
-                /> */}
+                <View style={styles.pickerContainer}>
+                    <Text style={styles.pickerLabel}>Country: </Text>
+                    <Picker
+                        selectedValue={this.state.country}
+                        style={styles.picker}
+                        onValueChange={ (itemValue, itemIndex) =>
+                            this.setState({country: itemValue}) }>
+                        <Picker.Item label='India' value='in' />
+                        <Picker.Item label='USA' value='us' />
+                    </Picker>
+                </View>
                 <NewsListComponent
-                    onNewsSelect={title => navigation.navigate('Details', {title})}
+                    // page={ 1 }
+                    // pageSize={ 3 }
+                    // disableInfiniteScroll={ false }
+                    country={ this.state.country }
+                    onNewsSelect={item => navigation.navigate('Details', {item})}
                 />
             </View>
         );
@@ -53,5 +73,27 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: colors.background
+    },
+    pickerContainer: {
+        flexDirection: 'row',
+        backgroundColor: colors.secondary,
+        marginTop: 95,
+        marginLeft: padding.sm,
+        marginRight: padding.sm,
+        padding: padding.md,
+        borderRadius: 10
+    },
+    pickerLabel: {
+        flex: 1,
+        height: 30,
+        color: colors.textWhite,
+        fontSize: fonts.md,
+        fontWeight: 'bold',
+        paddingTop: 3
+    },
+    picker: {
+        flex: 3,
+        height: 30,
+        color: colors.textWhite
     }
 });

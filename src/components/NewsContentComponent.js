@@ -11,7 +11,8 @@ import { colors, padding, fonts } from './_base';
 
 const NewsContentComponent = (props) => {
     // Title, Image, Author, Source, Content, Published on, Link to the content
-    const { title, urlToImage, author, source , content, publishedAt, url } = props.newsContent[0];
+    const { title, urlToImage, author, source , content, publishedAt, url } = props.newsContent;
+    // console.log('props: ', props.newsContent);
     // console.log('props: ',props.newsContent[0], title, urlToImage, author, source , content, publishedAt, url);
     return (
         <View style={styles.summaryContainer}>
@@ -21,12 +22,14 @@ const NewsContentComponent = (props) => {
 
             <View style={styles.contentImage}>
                 {urlToImage ? <Image
-                    style={{width: 300, height: 200}}
+                    style={{flex: 1, width: 300, maxWidth: 500}}
                     source={{uri: urlToImage}}
+                    resizeMode='contain'
                 />:
                 <Image
-                    style={{width: 300, height: 200}}
+                    style={{flex: 1, width: 300, maxWidth: 500}}
                     source={require('./image/featuredimage.jpg')}
+                    resizeMode='contain'
                 />}
             </View>
 
@@ -66,16 +69,19 @@ const styles = StyleSheet.create({
         padding: padding.sm
     },
     titleContainer: {
-        flex: 2
+        // flex: 2
     },
     newsTitleText: {
         fontWeight: 'bold',
         fontSize: fonts.lg,
-        color: colors.white
+        color: colors.textWhite
     },
     contentImage: {
-        flex: 4,
-        marginTop: padding.md        
+        flex: 3,
+        marginTop: padding.md,
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignContent: 'center'
     },
     newsSourceContainer: {
         flex: 1,
@@ -89,18 +95,18 @@ const styles = StyleSheet.create({
         marginTop: padding.sm
     },
     contentContainer: {
-        flex: 4,
+        flex: 3,
         alignSelf: 'stretch',
         flexDirection: 'column',
         marginTop: padding.md
         // alignItems: 'center'
     },
     contentText: {
-        color: colors.white,
+        color: colors.textWhite,
         fontSize: fonts.md
     },
     footerContainer: {
-        flex: 1,
+        // flex: 2,
         marginTop: padding.sm
     },
     footerText: {

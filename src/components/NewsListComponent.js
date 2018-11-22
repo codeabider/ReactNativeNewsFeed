@@ -16,12 +16,14 @@ import NewsSummaryComponent from './NewsSummaryComponent';
 export default class NewsListComponent extends Component {
     flatlistRef = null;
     errorText = null;
+    newsFeedData = require('../data/newsFeed.json');
 
     constructor(props) {
         super(props);
         this.state = {
             data: [],
             refreshing: false,
+            manualRefresh: false,
             page: props.page || 1,
             pageSize: props.pageSize || 3,
             noMore: props.disableInfiniteScroll || false,
@@ -50,35 +52,56 @@ export default class NewsListComponent extends Component {
     }
 
     getData() {
-        const { data, page, pageSize, noMore, country } = this.state;
+        const { data, page, pageSize, noMore, country, manualRefresh } = this.state;
         const apiKey = '2e7bb23ac4ba434d9b47cdd21b5aa87d';
-        // const pageSize = 3;
-        // const page = 2;
 
-        this.setState({ loading: true }, () => {
+        this.setState({
+            loading: true,
+            error: {
+                message: ''
+            }
+        }, () => {
             fetch(`https://newsapi.org/v2/top-headlines?country=${country}&pageSize=${pageSize}&page=${page}&apiKey=${apiKey}`)
             .then( response => response.json() )
             .then( updatedData => {
-                // console.log(updatedData.articles);
+                // console.log(updatedData);
                 this.setState({
-                    // data: updatedData.articles
+                    // data: updatedData
                     data: [...data, ...updatedData.articles],
                     noMore: noMore || updatedData.length < pageSize*page
+                }, () => {
+                    if(manualRefresh) {
+                        this.scrollToTop();
+                        this.setState({manualRefresh: false});
+                    }
                 });
-                // console.log(`https://newsapi.org/v2/top-headlines?country=${country}&pageSize=${pageSize}&page=${page}&apiKey=${apiKey}`, 'data', this.state.data);
-                // Alert.alert('You are up-to-date', 'News feed refreshed successfully');
             } )
             .catch( error => {
-                Alert.alert('Oh snap!', error.message);
-                // console.log(error);
-                this.setState({ error });
-                console.log(this.state.error.message);
+                if(!data.length) {
+                    this.setState({ error });
+                }
             } )
             .finally( () => {
                 this.setState({ loading: false, refreshing: false });
-                // this.scrollToTop();
             })
-        })
+        });
+
+        // this.showFakeData();
+    }
+
+    showFakeData() {
+        // console.log('dummy data: ', this.newsFeedData);
+        setTimeout(() => {
+            this.setState({
+                data: this.newsFeedData.articles,
+                error: {
+                    message: ''
+                },
+                noMore: true,
+                loading: false,
+                refreshing: false
+            });
+        }, 700);
     }
 
     loadMore() {
@@ -88,11 +111,10 @@ export default class NewsListComponent extends Component {
     }
 
     handleRefresh() {
-        this.setState({ refreshing: true }, () => {
-            this.getData();
-            // this.scrollToTop();
-        });
-        // !this.state.refreshing ? this.scrollToTop() : null;
+        this.setState({
+            refreshing: true,
+            manualRefresh: true
+        }, () => this.getData());
     }
 
     scrollToTop() {
@@ -105,7 +127,10 @@ export default class NewsListComponent extends Component {
         return (
             <View>
                 {   error.message.length > 1 ?
-                    <Text style={styles.errorText}>{ error.message }</Text>: null}
+                    <Text style={styles.errorText}>
+                        { error.message }. We'll be back shortly!
+                    </Text>: null
+                }
                 
                 <FlatList
                     ref={ (ref) => this.flatlistRef = ref }
@@ -128,21 +153,18 @@ export default class NewsListComponent extends Component {
                     onEndReached={ this.loadMore.bind(this) }
                     ListFooterComponent={ <LoaderComponent isLoading={ loading } /> }
                 />
-                <GoToTopButtonComponent
-                    onButtonPressed={ this.scrollToTop.bind(this) }
-                />
-                {/* {   (!loading && data.length) ?
+
+                {   data.length ?
                     <GoToTopButtonComponent
                         onButtonPressed={ this.scrollToTop.bind(this) }
                     /> : null
-                } */}
+                }
             </View>
         )
     }
 }
 
 NewsListComponent.propTypes = {
-    // id: PropTypes.string.isRequired,
     pageSize: PropTypes.number,
     page: PropTypes.number,
     disableInfiniteScroll: PropTypes.bool,
@@ -154,7 +176,7 @@ NewsListComponent.propTypes = {
 const styles = StyleSheet.create({
     listItem: {
         flex: 1,
-        padding: padding.md,
+        padding: padding.sm,
         backgroundColor: colors.background
     },
     errorText: {
@@ -166,7 +188,8 @@ const styles = StyleSheet.create({
         height: 300,
         width: 300,
         color: colors.normalText,
-        paddingTop: '35%',
-        paddingLeft: '15%'
+        paddingTop: 125,
+        paddingLeft: 35,
+        paddingRight: 35
     }
 });

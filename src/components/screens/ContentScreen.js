@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Alert } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import NewsContentComponent from '../NewsContentComponent';
 import { colors } from '../_base';
 
 export default class ContentScreen extends Component {
     static navigationOptions = {
-        title: 'In Details',
+        title: 'News Details',
         headerTintColor: colors.secondaryBackground,
         headerStyle: {
           backgroundColor: colors.primary
@@ -17,7 +17,7 @@ export default class ContentScreen extends Component {
     
     render() {
         const { navigation } = this.props;
-        
+
         return (
             <View style={styles.container}>
                 <NewsContentComponent

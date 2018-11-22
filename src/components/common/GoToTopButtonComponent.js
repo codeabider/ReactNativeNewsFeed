@@ -7,7 +7,6 @@ const GoToTopButtonComponent = (props) => {
         <View style={ styles.container }>
             <Text
                 style={ styles.button }
-                title="Top"
                 onPress={ props.onButtonPressed }
             >TOP</Text>
         </View>
@@ -21,7 +20,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        bottom: 80,
+        bottom: -10,
         right: 0,
         height: 60,
         width: 60,

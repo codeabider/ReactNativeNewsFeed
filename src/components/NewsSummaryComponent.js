@@ -3,9 +3,7 @@ import {
     View,
     Text,
     StyleSheet,
-    Image,
-    Linking,
-    Alert
+    Image
 } from 'react-native';
 import { colors, padding, fonts } from './_base';
 
@@ -51,7 +49,7 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         backgroundColor: colors.secondaryBackground,
         borderRadius: 10,
-        padding: padding.sm
+        padding: padding.md
     },
     summaryHeaderContainer: {
         flex: 1,

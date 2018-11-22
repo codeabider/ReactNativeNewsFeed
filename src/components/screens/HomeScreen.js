@@ -7,20 +7,22 @@ import {
     Text
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
+import { DrawerActions } from 'react-navigation'
 import NewsListComponent from '../NewsListComponent';
 import { colors, fonts, padding } from '../_base';
 
 export default class HomeScreen extends Component {
     static navigationOptions = () => ({
-        title: 'News Home',
-        headerTintColor: colors.secondaryBackground,
-        headerStyle: {
-          backgroundColor: colors.primary
-        },
-        headerTitleStyle: {
-            flex: 1,
-            textAlign: 'center'
-        }
+        // title: 'News Home',
+        // headerTintColor: colors.secondaryBackground,
+        // headerStyle: {
+        //   backgroundColor: colors.primary
+        // },
+        // headerTitleStyle: {
+        //     flex: 1,
+        //     textAlign: 'center'
+        // }
+        header: null
     });
 
     constructor(props) {
@@ -38,6 +40,7 @@ export default class HomeScreen extends Component {
     render() {
         const { navigation } = this.props;
         const { country } = this.state;
+
         return (
             <View style={styles.container}>
                 <StatusBar 
@@ -45,9 +48,11 @@ export default class HomeScreen extends Component {
                     barStyle='light-content' // for iOS
                 />
                 <View style={styles.pickerContainer}>
-                    <Text style={styles.pickerLabel}>Country: </Text>
+                    <Text style={styles.pickerLabel}
+                        onPress={ () => navigation.dispatch(DrawerActions.toggleDrawer()) }
+                    >Country: </Text>
                     <Picker
-                        selectedValue={this.state.country}
+                        selectedValue={country}
                         style={styles.picker}
                         onValueChange={ (itemValue, itemIndex) =>
                             this.setState({country: itemValue}) }>
@@ -59,7 +64,7 @@ export default class HomeScreen extends Component {
                     // page={ 1 }
                     // pageSize={ 3 }
                     // disableInfiniteScroll={ false }
-                    country={ this.state.country }
+                    country={ country }
                     onNewsSelect={item => navigation.navigate('Details', {item})}
                 />
             </View>
@@ -72,7 +77,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: colors.background
+        backgroundColor: colors.background,
+        paddingBottom: 90
     },
     pickerContainer: {
         flexDirection: 'row',

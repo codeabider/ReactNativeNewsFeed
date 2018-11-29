@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet, View, Text, Button, Linking, Alert } from 'react-native';
 import { colors, padding, fonts } from '../_base';
 
 export default class InfoScreen extends Component {    
@@ -8,8 +8,17 @@ export default class InfoScreen extends Component {
         
         return (
             <View style={styles.container}>
-                <Text>Developed by: Harshdeep Bilaiya</Text>
-                <Text>News Source: https://newsapi.org/</Text>
+                <Text style={styles.infoText}>
+                    <Text style={{fontWeight: 'bold'}}>Developed by:</Text> Harshdeep Bilaiya</Text>
+                <Text style={styles.infoText}>
+                    <Text style={{fontWeight: 'bold'}}>News Source:</Text>
+                    <Text onPress={() => { 
+                        Linking.openURL('https://newsapi.org/')
+                        .catch(err => {
+                            Alert.alert('Something went wrong!')
+                        })
+                    }}> https://newsapi.org/</Text>
+                </Text>
                 <Button
                     style={ styles.button }
                     title='Home'
@@ -22,6 +31,15 @@ export default class InfoScreen extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        padding: padding.lg,
+        backgroundColor: colors.secondaryBackground,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    infoText: {
+        color: colors.normalText,
+        fontSize: fonts.md,
+        paddingBottom: padding.lg
     }
 });

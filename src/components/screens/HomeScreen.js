@@ -12,24 +12,10 @@ import NewsListComponent from '../NewsListComponent';
 import { colors, fonts, padding } from '../_base';
 
 export default class HomeScreen extends Component {
-    static navigationOptions = () => ({
-        // title: 'News Home',
-        // headerTintColor: colors.secondaryBackground,
-        // headerStyle: {
-        //   backgroundColor: colors.primary
-        // },
-        // headerTitleStyle: {
-        //     flex: 1,
-        //     textAlign: 'center'
-        // }
-        header: null
-    });
-
     constructor(props) {
         super(props);
         this.state = {
-            country: 'in',
-            topic: ''
+            country: 'in'
         }
     }
 
@@ -48,9 +34,10 @@ export default class HomeScreen extends Component {
                     barStyle='light-content' // for iOS
                 />
                 <View style={styles.pickerContainer}>
-                    <Text style={styles.pickerLabel}
-                        onPress={ () => navigation.dispatch(DrawerActions.toggleDrawer()) }
-                    >Country: </Text>
+                    <Text style={styles.infoButton}
+                        onPress={ () => navigation.dispatch(DrawerActions.openDrawer()) }
+                    >i</Text>
+                    <Text style={styles.pickerLabel}>Country: </Text>
                     <Picker
                         selectedValue={country}
                         style={styles.picker}
@@ -89,8 +76,22 @@ const styles = StyleSheet.create({
         padding: padding.md,
         borderRadius: 10
     },
+    infoButton: {
+        // flex: 1,
+        height: 20,
+        width: 20,
+        borderRadius: 10,
+        backgroundColor: colors.textWhite,
+        color: colors.normalText,
+        fontSize: fonts.sm,
+        fontWeight: 'bold',
+        // paddingTop: 3,
+        paddingLeft: 8,
+        marginTop: 3, 
+        marginRight: padding.sm
+    },
     pickerLabel: {
-        flex: 1,
+        flex: 2,
         height: 30,
         color: colors.textWhite,
         fontSize: fonts.md,

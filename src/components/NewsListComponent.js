@@ -6,7 +6,7 @@ import {
     FlatList,
     TouchableHighlight,
     StyleSheet,
-    Alert
+    AsyncStorage
 } from 'react-native';
 import { colors, padding, fonts } from './_base';
 import LoaderComponent from './common/LoaderComponent';
@@ -66,7 +66,6 @@ export default class NewsListComponent extends Component {
             .then( updatedData => {
                 // console.log(updatedData);
                 this.setState({
-                    // data: updatedData
                     data: [...data, ...updatedData.articles],
                     noMore: noMore || updatedData.length < pageSize*page
                 }, () => {
@@ -74,19 +73,28 @@ export default class NewsListComponent extends Component {
                         this.scrollToTop();
                         this.setState({manualRefresh: false});
                     }
+                    this._storeItem('cachedData', this.state);
                 });
             } )
             .catch( error => {
-                if(!data.length) {
-                    this.setState({ error });
-                }
+                this.setState({ error });
+                this._retrieveItem('cachedData')
+                .then( obj => {
+                    console.log('retrieved: ', obj);
+                    const { data } = obj;
+                    this.setState({
+                        data: data,
+                        noMore: true
+                    });
+                })
+                .catch( error => console.log('Error while fetching from cache', error));
             } )
             .finally( () => {
                 this.setState({ loading: false, refreshing: false });
             })
         });
 
-        // this.showFakeData();
+        // this.setState({ loading: true }, () => this.showFakeData());
     }
 
     showFakeData() {
@@ -101,7 +109,27 @@ export default class NewsListComponent extends Component {
                 loading: false,
                 refreshing: false
             });
-        }, 700);
+        }, 100);
+    }
+
+    _storeItem = async (key, item) => {
+        try {
+            let jsonOfItem = await AsyncStorage.setItem(key, JSON.stringify(item));
+            return jsonOfItem;
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    _retrieveItem = async (key) => {
+        try {
+            const retrievedItem =  await AsyncStorage.getItem(key);
+            const item = JSON.parse(retrievedItem);
+            return item;
+        } catch (error) {
+            console.log(error.message);
+        }
+        return
     }
 
     loadMore() {
@@ -180,16 +208,19 @@ const styles = StyleSheet.create({
         backgroundColor: colors.background
     },
     errorText: {
+        // flex: 1,
         fontSize: fonts.md,
         fontWeight: 'bold',
-        backgroundColor: colors.secondaryBackground,
-        marginTop: padding.md,
+        backgroundColor: colors.primary,
+        margin: padding.sm,
+        marginBottom: 0,
         borderRadius: 10,
-        height: 300,
-        width: 300,
-        color: colors.normalText,
-        paddingTop: 125,
-        paddingLeft: 35,
-        paddingRight: 35
+        height: 50,
+        // width: 300,
+        color: colors.textWhite,
+        padding: padding.md
+        // paddingTop: 125,
+        // paddingLeft: 35,
+        // paddingRight: 35
     }
 });

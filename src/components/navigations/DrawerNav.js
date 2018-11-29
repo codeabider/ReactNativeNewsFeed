@@ -1,15 +1,19 @@
 import { createDrawerNavigator, createAppContainer } from 'react-navigation';
 import HomeScreen from '../screens/HomeScreen';
-import DrawerScreen from '../screens/DrawerScreen';
+import InfoScreen from '../screens/InfoScreen';
 
-const DrawerNav = createDrawerNavigator({
-    Home: {
-        screen: HomeScreen
+const DrawerNav = createDrawerNavigator(
+    {
+        Home: {
+            screen: HomeScreen
+        },
+        Info: {
+            screen: InfoScreen
+        }
+    },
+    {
+        drawerWidth: 200
     }
-},{
-    initialRouteName: 'Home',
-    contentComponent: DrawerScreen,
-    drawerWidth: 300
-});
+);
 
 export default createAppContainer(DrawerNav);
